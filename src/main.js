@@ -6,10 +6,10 @@ import router from './router'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-light.css'
+import axios from  'axios'
 Vue.use(MuseUI)
 Vue.config.productionTip = false
-
-/* eslint-disable no-new */
+Vue.prototype.$http =axios
 new Vue({
   el: '#app',
   router,

@@ -1,21 +1,38 @@
 <template>
-  <div class="demo-grid">
-    <div class="approval-img">
-    </div>
-    <div class="approval-text">
+  <div>
+    <div class="demo-grid" v-show="showTodo"><!--v-for="item ,index in todoList" :key="index"-->
+      <div class="approval-img">
+      </div>
+      <div class="approval-text">
         <p class="title">关于成立省协同平台开发小组的通知</p>
-       <p class="subtitle">发起人:张晓明</p>
-      <p class="subtitle">发送时间:2017-08-10 21:42</p>
-      <p class="result">审批拒绝</p>
+        <p class="subtitle">发起人:张晓明</p>
+        <p class="subtitle">发送时间:2017-08-10 21:42</p>
+        <p class="result">审批拒绝</p>
+      </div>
     </div>
+    <div v-show="showBlank">什么也没有</div>
   </div>
 
 </template>
 <script>
   export default{
     name: 'todoItem',
+    props: [
+      'TodoList'
+    ],
     data(){
-      return {}
+      return {
+        todoList: [],
+        config: this.Config,
+        showTodo: true,
+        showBlank: false,
+      }
+    },
+    mounted: function () {
+      if (!this.todoList) {
+        this.showTodo = false;
+        this.showBlank = true;
+      }
     }
   }
 </script>
@@ -42,22 +59,25 @@
     padding-left: 21px;
     position: relative;
   }
-  .title{
-    font-size:16px;
-    color:#2d2d2d;
-    text-align:left;
+
+  .title {
+    font-size: 16px;
+    color: #2d2d2d;
+    text-align: left;
     line-height: 22px;
     margin-bottom: 8px;
   }
-  .subtitle{
-    color:#77797c;
+
+  .subtitle {
+    color: #77797c;
     font-size: 12px;
     margin: 0;
     text-align: left;
   }
-  .result{
-    font-size:12px;
-    color:#f27662;
-    text-align:left;
+
+  .result {
+    font-size: 12px;
+    color: #f27662;
+    text-align: left;
   }
 </style>

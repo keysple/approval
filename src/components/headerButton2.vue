@@ -15,24 +15,26 @@
 </template>
 <script>
   export default{
-    name: 'headerButton',
+    name: 'headerButton2',
     props: {
       tabId: String,
     },
     data(){
       return {
+        value: '',
+        tabid: this.tabId,
       }
     },
     methods: {
       changeTab1(){
-        this.$parent.tab1Header = false;
-        this.$parent.tab1Search = true;
-        this.$parent.tab1Todo = false;
+        this.$parent.tab2Header = false;
+        this.$parent.tab2Search = true;
+        this.$parent.tab2Todo = false;
       },
       changeTab2(){
-        this.$parent.tab1Header = false;
-        this.$parent.tab1Filter = true;
-        this.$parent.tab1Todo = false;
+        this.$parent.tab2Header = false;
+        this.$parent.tab2Filter = true;
+        this.$parent.tab2Todo = false;
       }
     }
   }

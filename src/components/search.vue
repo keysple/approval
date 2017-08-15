@@ -2,10 +2,10 @@
   <div>
     <div class="header-search">
       <i class="search-icon"><img src="../assets/search.svg" width="30" height="30"/></i>
-      <input placeholder="搜索标题、发起人" class="search-button"/>
-      <span>取消</span>
+      <input placeholder="搜索标题、发起人" class="search-button" v-model="nameTitle" @change="inputChange"/>
+      <div class="search-cancel" @click="cancelSearch"><span>取消</span></div>
     </div>
-    <div class="search-comment">
+    <div class="search-comment" v-show="commentShow">
       <p class="search-comment-text">在这里可以搜索到</p>
       <div class="search-comment-icon">
         <div class="comment-detail">
@@ -27,13 +27,55 @@
       </div>
 
     </div>
+    <div v-show="todoShow">
+      <todo-item :TodoList="todoList" ></todo-item>
+    </div>
   </div>
 </template>
 <script>
+  import TodoItem from "./todoItem";
   export default{
+    components: {TodoItem},
     name: 'search',
-    props: {
-      isInput: false
+    props:{
+      State:Number,
+    },
+    data(){
+      return {
+        nameTitle: '',
+        todoList:[],
+        commentShow:true,
+        todoShow:false,
+      }
+    },
+    methods: {
+      cancelSearch  (){
+        this.$parent.tab1Header = !this.$parent.tab1Header;
+        this.$parent.tab1Search = !this.$parent.tab1Search;
+        this.$parent.tab1Todo = !this.$parent.tab1Todo;
+        this.$parent.tab2Header = !this.$parent.tab2Header;
+        this.$parent.tab2Search = !this.$parent.tab2Search;
+        this.$parent.tab2Todo = !this.$parent.tab2Todo;
+        this.nameTitle='';
+      },
+      inputChange() {
+          this.commentShow=false;
+          this.todoShow=true;
+        var Config = {
+          method: 'get',
+          url: '/oapi/backlog/search',
+          params: {
+            userid: '2',
+            state: this.State,
+            title:this.nameTitle,
+            name:this.nameTitle
+          }
+        };
+        this.$http(Config).then(function (response) {
+          console.log(response.data);
+        }).catch(function (error) {
+        });
+      },
     }
   }
 </script>
@@ -100,5 +142,9 @@
 
   .comment-detail p {
     margin: 0;
+  }
+
+  .search-cancel {
+    display: inline;
   }
 </style>
