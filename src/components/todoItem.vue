@@ -1,16 +1,18 @@
 <template>
   <div>
-    <div class="demo-grid" v-show="showTodo"><!--v-for="item ,index in todoList" :key="index"-->
+    <div class="demo-grid" v-show="showTodo" v-for="item  in todoList" :key="item.agentId" @click="gotoCallbackUrl(item.callbackUrl)"><!--v-for="item ,index in todoList" :key="index"-->
       <div class="approval-img">
       </div>
       <div class="approval-text">
-        <p class="title">关于成立省协同平台开发小组的通知</p>
-        <p class="subtitle">发起人:张晓明</p>
-        <p class="subtitle">发送时间:2017-08-10 21:42</p>
-        <p class="result">审批拒绝</p>
+        <p class="title">{{item.title}}</p>
+        <p class="subtitle">发起人:{{item.fromUserName}}</p>
+        <p class="subtitle">发送时间:{{item.startTime}}</p>
+        <p class="result">{{item.callbackUrl}}</p>
       </div>
     </div>
-    <div v-show="showBlank">什么也没有</div>
+    <div v-show="showBlank" class="empty">
+      <img src="../assets/empty-search.svg"/>
+    </div>
   </div>
 
 </template>
@@ -29,9 +31,14 @@
       }
     },
     mounted: function () {
-      if (!this.todoList) {
+      if (this.todoList.length===0) {
         this.showTodo = false;
         this.showBlank = true;
+      }
+    },
+    methods:{
+      gotoCallbackUrl(url){
+           window.location.href(url);
       }
     }
   }
@@ -79,5 +86,8 @@
     font-size: 12px;
     color: #f27662;
     text-align: left;
+  }
+  .empty{
+    margin-top: 40%;
   }
 </style>

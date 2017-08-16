@@ -28,24 +28,25 @@
 
     </div>
     <div v-show="todoShow">
-      <todo-item :TodoList="todoList" ></todo-item>
+      <todo-item :TodoList="todoList"></todo-item>
     </div>
   </div>
 </template>
 <script>
   import TodoItem from "./todoItem";
+  import {host} from '../util/host'
   export default{
     components: {TodoItem},
     name: 'search',
-    props:{
-      State:Number,
+    props: {
+      State: Number,
     },
     data(){
       return {
         nameTitle: '',
-        todoList:[],
-        commentShow:true,
-        todoShow:false,
+        todoList: [],
+        commentShow: true,
+        todoShow: false,
       }
     },
     methods: {
@@ -56,26 +57,31 @@
         this.$parent.tab2Header = !this.$parent.tab2Header;
         this.$parent.tab2Search = !this.$parent.tab2Search;
         this.$parent.tab2Todo = !this.$parent.tab2Todo;
-        this.nameTitle='';
+       this.init();
       },
       inputChange() {
-          this.commentShow=false;
-          this.todoShow=true;
+          this.todoList=[];
+        this.commentShow = false;
+        this.todoShow = true;
         var Config = {
           method: 'get',
-          url: '/oapi/backlog/search',
+          url: host+'/oapi/backlog/search',
           params: {
-            userid: '2',
+            userid: '12216103111696',
             state: this.State,
-            title:this.nameTitle,
-            name:this.nameTitle
+            title: this.nameTitle,
+            name: this.nameTitle
           }
         };
         this.$http(Config).then(function (response) {
+            this.$set(this,'todoList',response.data.data);
           console.log(response.data);
         }).catch(function (error) {
         });
       },
+      init(){
+          this.nameTitle='';
+      }
     }
   }
 </script>
