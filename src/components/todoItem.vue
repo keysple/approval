@@ -1,20 +1,26 @@
 <template>
   <div>
-    <div class="demo-grid" v-show="showTodo" v-for="item  in todoList" :key="item.agentId" @click="gotoCallbackUrl(item.callbackUrl)"><!--v-for="item ,index in todoList" :key="index"-->
-      <div class="approval-img">
-      </div>
-      <div class="approval-text">
-        <p class="title">{{item.title}}</p>
-        <p class="subtitle">发起人:{{item.fromUserName}}</p>
-        <p class="subtitle">发送时间:{{item.startTime}}</p>
-        <p class="result">{{item.callbackUrl}}</p>
+    <div>
+      <div class="demo-grid" v-for="item  in TodoList" :key="item.agentId" @click="gotoCallbackUrl(item.callbackUrl)"
+           v-if="TodoList">
+        <div class="approval-img">
+          <img :src="item.appLogo"/>
+        </div>
+        <div class="approval-text">
+          <p class="title">{{item.title}}</p>
+          <p class="subtitle">发起人:{{item.sponsorUserName}}</p>
+          <p class="subtitle">发送时间:{{FormatUnixTime(item.startTime)}}</p>
+          <p class="result">{{item.timeout}}</p>
+        </div>
+        <div class="type-hot" v-if="item.level===1"></div>
+        <div class="type-normal" v-if="item.level===0"></div>
       </div>
     </div>
-    <div v-show="showBlank" class="empty">
+
+    <div class="empty" v-if="TodoList.length<1">
       <img src="../assets/empty-search.svg"/>
     </div>
   </div>
-
 </template>
 <script>
   export default{
@@ -24,35 +30,34 @@
     ],
     data(){
       return {
-        todoList: [],
         config: this.Config,
-        showTodo: true,
-        showBlank: false,
       }
     },
     mounted: function () {
-      if (this.todoList.length===0) {
-        this.showTodo = false;
-        this.showBlank = true;
-      }
     },
-    methods:{
+    methods: {
       gotoCallbackUrl(url){
-           window.location.href(url);
+        window.open(url, '_self')
+      },
+      FormatUnixTime (unixtime) {
+        var date = new Date(unixtime);
+        var commonTime = date.toLocaleString();
+        return commonTime;
       }
     }
   }
 </script>
-<style>
+<style scoped="">
   .demo-grid {
     height: 116px;
+    position: relative;
+    margin-top: 16px;
+    margin-left: 12px;
   }
 
   .approval-img {
     display: inline-block;
     float: left;
-    margin-top: 16px;
-    margin-left: 12px;
     width: 34px;
     height: 34px;
     background: #999999;
@@ -64,7 +69,7 @@
     float: left;
     display: inline-block;
     padding-left: 21px;
-    position: relative;
+    padding-bottom: -16px;
   }
 
   .title {
@@ -72,6 +77,7 @@
     color: #2d2d2d;
     text-align: left;
     line-height: 22px;
+    margin-top: 0px;
     margin-bottom: 8px;
   }
 
@@ -87,7 +93,27 @@
     color: #f27662;
     text-align: left;
   }
-  .empty{
-    margin-top: 40%;
+
+  .empty {
+    padding-top: 40%;
   }
+
+  .type-hot {
+    width: 0;
+    height: 0;
+    float: right;
+    border-top: 30px solid #ff9949;
+    border-left: 30px solid transparent;
+    z-index: 10;
+  }
+
+  .type-normal {
+    width: 0;
+    height: 0;
+    float: right;
+    border-top: 30px solid #6dcdf5;
+    border-left: 30px solid transparent;
+    z-index: 10;
+  }
+
 </style>

@@ -59,11 +59,10 @@
       initApp(){
         const self = this;
         config.getAccessToken().then(function (response) {
-            console.log(response.data)
-          /*        var result = response.data;
-           self.$store.dispatch("addInfo", result);*/
-     /*     this.getTodoList(0);
-          this.getTodoList(1);*/
+          var token = response.data.retData.token;
+          self.$store.dispatch("addInfo", token);
+          self.getTodoList(0);
+          self.getTodoList(1);
           self.$refs.tabFilter.getTypeList();
         });
       },
@@ -84,42 +83,47 @@
           method: 'get',
           url: host + '/oapi/backlog/filter',
           params: {
-            userid: '12216103111696',
+            userId: '02085412121568',
             state: State,
             level: '',
             timestamp: timestamp,
-            ACCESS_TOKEN: ''
+            access_token: this.$store.state.token,
           }
         };
-        this.$http(Config).then(function (response) {
-          if (State === 0) {
-            this.$set(this, 'tab1TodoList', response.data)
-          } else {
-            this.$set(this, 'tab2TodoList', response.data)
+        this.$http(Config).then(response => {
+            if (Config.params.state== 0) {
+              this.$set(this, 'tab1TodoList', response.data.retData.data);
+              this.$set(this, 'todos', response.data.retData.data.length);
+            } else {
+              this.$set(this, 'tab2TodoList', response.data.retData.data);
+            }
+          }, response => {
+            console.log(response)
           }
-          console.log(response.data);
-        }).catch(function (error) {
-        });
+        )
       },
-      updateFilter1(type){
+      updateFilter1(params){
         this.tab1TodoList = [];
         var Config = {
           method: 'get',
           url: host + '/oapi/backlog/filter',
           params: {
-            userid: '12216103111696',
+            userId: '02085412121568',
             state: 0,
-            agentId: type,
+            level:params.level,
             timestamp: timestamp,
-            ACCESS_TOKEN: ''
+            access_token: this.$store.state.token
           }
         };
-        this.$refs.tabFilter.initType();
-        this.$http(Config).then(function (response) {
-          this.$set(this, 'tab1TodoList', response.data.data);
-          this.$set(this, 'todos', response.data.data.length);
-          console.log(response.data);
-        }).catch(function (error) {
+        if(params.agentId!==''){
+            Config.params.agentId=params.agentId;
+          console.log(Config.params)
+        }
+
+        this.$http(Config).then(response => {
+          this.$set(this, 'tab1TodoList', response.data.retData.data);
+          this.$refs.tabFilter.initType();
+        }).catch(response => {
         });
       },
       updateFilter2(type){
@@ -128,18 +132,17 @@
           method: 'get',
           url: host + '/oapi/backlog/filter',
           params: {
-            userid: '12216103111696',
+            userId: '02085412121568',
             state: 1,
             agentId: type,
             timestamp: timestamp,
-            ACCESS_TOKEN: ''
+            access_token: this.$store.state.token
           }
         };
         this.$refs.tabFilter.initType();
-        this.$http(Config).then(function (response) {
-          this.$set(this, 'tab2TodoList', response.data.data);
-          console.log(response.data);
-        }).catch(function (error) {
+        this.$http(Config).then(response => {
+          this.$set(this, 'tab2TodoList', response.data.retData.data);
+        }).catch(response => {
         });
       },
     }

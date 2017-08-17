@@ -34,7 +34,7 @@
 </template>
 <script>
   import TodoItem from "./todoItem";
-  import {host} from '../util/host'
+  import {host, timestamp} from '../util/host'
   export default{
     components: {TodoItem},
     name: 'search',
@@ -57,30 +57,35 @@
         this.$parent.tab2Header = !this.$parent.tab2Header;
         this.$parent.tab2Search = !this.$parent.tab2Search;
         this.$parent.tab2Todo = !this.$parent.tab2Todo;
-       this.init();
+        this.init();
       },
       inputChange() {
-          this.todoList=[];
+        this.todoList = [];
         this.commentShow = false;
         this.todoShow = true;
         var Config = {
           method: 'get',
-          url: host+'/oapi/backlog/search',
+          url: host + '/oapi/backlog/search',
           params: {
-            userid: '12216103111696',
+            userId: '02085412121568',
             state: this.State,
-            title: this.nameTitle,
-            name: this.nameTitle
+            timestamp: timestamp,
+            access_token: this.$store.state.token,
+            keyword: this.nameTitle,
           }
         };
-        this.$http(Config).then(function (response) {
-            this.$set(this,'todoList',response.data.data);
+        this.$http(Config).then(response => {
           console.log(response.data);
-        }).catch(function (error) {
+          this.$set(this, 'todoList', response.data.retData.data);
+
+        }).catch(response => {
+            console.log(response)
         });
       },
       init(){
-          this.nameTitle='';
+        this.nameTitle = '';
+        this.commentShow = true;
+        this.todoShow = false;
       }
     }
   }

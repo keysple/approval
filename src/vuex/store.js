@@ -3,16 +3,16 @@ import  Vuex from  'vuex'
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
-    accesstoken:'',
+    token: '',
   },
   mutations: {
-    ADDINFO(state,info){
-      state.accesstoken.push(info);
+    ADDINFO(state, info){
+      state.token = info;
     },
   },
-  actions :{
-    addInfo(context,info){
-      context.commit("ADDINFO",info);
+  actions: {
+    addInfo(context, info){
+      context.commit("ADDINFO", info);
     }
   }
 });
