@@ -3,9 +3,8 @@
  */
 import  axios from 'axios'
 axios.defaults.withCredentials = true;
-const host = 'http://192.168.107.102:8003';
+const host = 'http://192.168.107.99:8003';
 const GMTtimestamp = ISODateString(new Date());
-//const timestamp=new Date().getUTCHours();
 export function getAccessToken() {
   var Config = {
     method: 'get',

@@ -117,7 +117,6 @@
         };
         if(params.agentId!==''){
             Config.params.agentId=params.agentId;
-          console.log(Config.params)
         }
 
         this.$http(Config).then(response => {
@@ -126,7 +125,7 @@
         }).catch(response => {
         });
       },
-      updateFilter2(type){
+      updateFilter2(params){
         this.tab2TodoList = [];
         var Config = {
           method: 'get',
@@ -134,14 +133,17 @@
           params: {
             userId: '02085412121568',
             state: 1,
-            agentId: type,
+            level:params.level,
             timestamp: timestamp,
             access_token: this.$store.state.token
           }
         };
-        this.$refs.tabFilter.initType();
+        if(params.agentId!==''){
+          Config.params.agentId=params.agentId;
+        }
         this.$http(Config).then(response => {
           this.$set(this, 'tab2TodoList', response.data.retData.data);
+          this.$refs.tabFilter.initType();
         }).catch(response => {
         });
       },

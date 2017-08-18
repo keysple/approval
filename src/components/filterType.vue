@@ -7,16 +7,14 @@
           <span>类型</span>
         </div>
         <div>
-          <mu-raised-button label="全部" class="filter-button" id="default"
-                            backgroundColor="#f4f4f4" color="#17c295" style="font-size: 15px"
-          >
+          <mu-raised-button label="全部" class="filter-button indexButton" id="default" @click="clickAll"
+                            style="color: #17c295">
           </mu-raised-button>
-          <mu-raised-button :label="item.name" class="filter-button" v-for="item  ,index in typeList" :key="index"
-                            id="item.agentId" backgroundColor="#f4f4f4" color="#666666" style="font-size: 15px"
+          <mu-raised-button v-for="item in typeList" :key="item.agentId"
+                            :id="item.agentId" :label="item.name" class="filter-button indexButton"
                             @click="filterEvent(item)">
           </mu-raised-button>
         </div>
-
       </div>
       <div class="header-type">
         <div style="text-align: left; height: 40px;line-height: 40px">
@@ -24,8 +22,8 @@
           <span>级别</span>
         </div>
         <div>
-          <mu-raised-button :label="item.name" class="level-button"
-                            v-for="item  ,index in levelList" :key="index"
+          <mu-raised-button v-for="item  in levelList" :key="item.level"
+                            :label="item.name" class="level-button indexButton" :id="item.level"
                             @click="filterLevel(item)">
           </mu-raised-button>
         </div>
@@ -60,7 +58,7 @@
         agentId: '',
         defaultType: '',
         level: '',
-        islevelSelected:false
+        islevelSelected: false
       }
     },
     methods: {
@@ -80,14 +78,36 @@
           level: this.level
         };
         this.$emit('updateFilter', params);
+        var indexButton =document.getElementsByClassName('indexButton')
+        for(var i=0;i<indexButton.length;i++){
+            indexButton[i].style.color='#666666';
+        }
+        document.getElementById('default').style.color = '#17c295';
       },
       filterEvent(val){
         this.agentId = val.agentId;
-        document.getElementById('default').style.color = '#666666';
+        var thisType = document.getElementById(val.agentId);
+        var typeparentNode = thisType.parentNode;
+        var typebroNode = typeparentNode.childNodes;
+        for (var j = 0; j < typebroNode.length; j++) {
+          if (typebroNode[j].tagName === 'BUTTON') {
+            typebroNode[j].style.color = '#666666';
+          }
+        }
+        thisType.style.color = '#17c295';
       },
       filterLevel(val){
         this.level = val.level;
-        this.islevelSelected=true;
+        var thisLevel = document.getElementById(val.level);
+        var levelparentNode = thisLevel.parentNode;
+        var levelbroNode = levelparentNode.childNodes;
+        for (var i = 0; i < levelbroNode.length; i++) {
+          levelbroNode[i].style.color = '#666666';
+        }
+        thisLevel.style.color = '#ff9949';
+      },
+      clickAll(){
+        document.getElementById('default').style.color = '#17c295';
       },
       getTypeList(){
         var Config = {
@@ -130,12 +150,9 @@
     height: 50px;
     border-radius: 9px;
     float: left;
-  }
-
-  .filter-button :hover {
-    color: #17c295;
-    font-size: 15px;
-    z-index: 4;
+    background-color: #f4f4f4;
+    color: #666666;
+    font-size: 15px
   }
 
   .level-button {
@@ -145,15 +162,9 @@
     height: 50px;
     border-radius: 9px;
     float: left;
-    background-color:#f4f4f4;
-    color:#666666;
+    background-color: #f4f4f4;
+    color: #666666;
     font-size: 15px
-  }
-
-  .level-button :hover {
-    color: #ff9949;
-    font-size: 15px;
-    z-index: 4;
   }
 
   .filter-fixed {
@@ -162,6 +173,4 @@
     left: 0;
     height: 50px
   }
-
-
 </style>
