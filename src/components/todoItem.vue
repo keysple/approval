@@ -4,22 +4,32 @@
       <div class="demo-grid" v-for="item  in TodoList" :key="item.agentId" @click="gotoCallbackUrl(item.callbackUrl)"
            v-if="TodoList">
         <div class="approval-img">
-          <img :src="item.appLogo"/>
+          <img :src="item.appLogo" style="width: 100%;height: 100%"/>
         </div>
         <div class="approval-text">
           <p class="title">{{item.title}}</p>
           <p class="subtitle">发起人:{{item.sponsorUserName}}</p>
           <p class="subtitle">发送时间:{{FormatUnixTime(item.startTime)}}</p>
-          <p class="result">{{item.timeout}}</p>
         </div>
-        <div class="type-hot" v-if="item.level===1"></div>
-        <div class="type-normal" v-if="item.level===0"></div>
+        <div v-show="waitstate===true">
+          <div v-if="item.timeout">
+            <div class="type-timeOut"></div>
+            <div class="type-timeOut-text">超时</div>
+          </div>
+          <div v-else-if="item.timeout===false&&item.level===1">
+            <div class="type-hot"></div>
+            <div class="type-hot-text">紧急</div>
+          </div>
+          <div v-else="item.timeout===false&&item.level===0">
+            <div class="type-wait"></div>
+            <div class="type-wait-text">待办</div>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="empty" v-if="TodoList.length<1">
+    <div v-if="TodoList.length<1">
       <img src="../assets/empty-search.svg"/>
-      <p>没有内容，请重新选择条件</p>
+      <p id="message">{{message}}</p>
     </div>
   </div>
 </template>
@@ -27,11 +37,15 @@
   export default{
     name: 'todoItem',
     props: [
-      'TodoList'
+      'TodoList',
+      'waitState'
     ],
     data(){
       return {
         config: this.Config,
+        message: '当前没有待办事务',
+        isMessage: false,
+        waitstate: this.waitState
       }
     },
     mounted: function () {
@@ -44,7 +58,7 @@
         var date = new Date(unixtime);
         var commonTime = date.toLocaleString();
         return commonTime;
-      }
+      },
     }
   }
 </script>
@@ -78,7 +92,7 @@
     color: #2d2d2d;
     text-align: left;
     line-height: 22px;
-    margin-top: 0px;
+    margin-top: 0;
     margin-bottom: 8px;
   }
 
@@ -95,26 +109,47 @@
     text-align: left;
   }
 
-  .empty {
-    padding-top: 40%;
-  }
-
   .type-hot {
     width: 0;
     height: 0;
     float: right;
-    border-top: 30px solid #ff9949;
+    border-top: 30px solid red;
     border-left: 30px solid transparent;
-    z-index: 10;
+    z-index: 3;
   }
-
-  .type-normal {
+  .type-hot-text {
+    float: right;
+    position: relative;
+    top: 20px;
+    color: #ff8a80;
+  }
+  .type-wait {
     width: 0;
     height: 0;
     float: right;
-    border-top: 30px solid #6dcdf5;
+    border-top: 30px solid green;
     border-left: 30px solid transparent;
-    z-index: 10;
+    z-index: 2;
+  }
+  .type-wait-text {
+    float: right;
+    position: relative;
+    top: 20px;
+    color: #81c784;
+  }
+  .type-timeOut {
+    width: 0;
+    height: 0;
+    float: right;
+    border-top: 30px solid darkgrey;
+    border-left: 30px solid transparent;
+    z-index: 4;
   }
 
+  .type-timeOut-text {
+    float: right;
+    position: relative;
+    top: 20px;
+    color: #bdbdbd;
+  }
 </style>

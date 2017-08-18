@@ -78,9 +78,9 @@
           level: this.level
         };
         this.$emit('updateFilter', params);
-        var indexButton =document.getElementsByClassName('indexButton')
-        for(var i=0;i<indexButton.length;i++){
-            indexButton[i].style.color='#666666';
+        var indexButton = document.getElementsByClassName('indexButton')
+        for (var i = 0; i < indexButton.length; i++) {
+          indexButton[i].style.color = '#666666';
         }
         document.getElementById('default').style.color = '#17c295';
       },
@@ -107,7 +107,15 @@
         thisLevel.style.color = '#ff9949';
       },
       clickAll(){
-        document.getElementById('default').style.color = '#17c295';
+        var Default = document.getElementById('default');
+        var defaultparentNode =Default.parentNode;
+        var defaultbroNode= defaultparentNode.childNodes;
+        for(var i=0;i<defaultbroNode.length;i++){
+          if (defaultbroNode[i].tagName === 'BUTTON') {
+            defaultbroNode[i].style.color = '#666666';
+          }
+        }
+        Default.style.color = '#17c295';
       },
       getTypeList(){
         var Config = {

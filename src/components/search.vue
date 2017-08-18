@@ -10,31 +10,23 @@
       <div class="search-comment-icon">
         <div class="comment-detail">
           <img src="../assets/审批标题.png" class="search-img"/>
-          <p>审批标题</p>
+          <p>待办标题</p>
         </div>
         <div class="comment-detail">
-          <img src="../assets/审批编号.png" class="search-img"/>
-          <p>审批编号</p>
-        </div>
-        <div class="comment-detail">
-          <img src="../assets/正文内容.png" class="search-img"/>
-          <p>正文内容</p>
-        </div>
-        <div class="comment-detail">
-          <img src="../assets/审批意见.png" class="search-img"/>
-          <p>审批意见</p>
+          <img src="../assets/people.png" class="search-img"/>
+          <p>发起人</p>
         </div>
       </div>
 
     </div>
     <div v-show="todoShow">
-      <todo-item :TodoList="todoList"></todo-item>
+      <todo-item :TodoList="todoList" ></todo-item>
     </div>
   </div>
 </template>
 <script>
   import TodoItem from "./todoItem";
-  import {host, timestamp} from '../util/host'
+  import {host, timestamp, userid} from '../util/host'
   export default{
     components: {TodoItem},
     name: 'search',
@@ -67,7 +59,7 @@
           method: 'get',
           url: host + '/oapi/backlog/search',
           params: {
-            userId: '02085412121568',
+            userId: userid,
             state: this.State,
             timestamp: timestamp,
             access_token: this.$store.state.token,
@@ -77,9 +69,8 @@
         this.$http(Config).then(response => {
           console.log(response.data);
           this.$set(this, 'todoList', response.data.retData.data);
-
         }).catch(response => {
-            console.log(response)
+          console.log(response)
         });
       },
       init(){
@@ -103,9 +94,17 @@
     position: relative;
     width: 85%;
     height: 30px;
+    line-height: normal;
     border: solid 1px #e0e0e0;
     border-radius: 5px;
     padding-left: 35px;
+    vertical-align: middle;
+  }
+
+  input::placeholder {
+    position: relative;
+    line-height: normal;
+    top: 3px;
   }
 
   .header-search span {
