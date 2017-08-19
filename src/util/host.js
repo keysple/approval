@@ -3,7 +3,10 @@
  */
 export const host='http://192.168.107.99:8003';
 export  const timestamp = ISODateString(new Date());
-export const  userid='68513866770109';
+/*href= location.href*/
+
+export const  userid=location.href.split('=')[1];
+console.log(userid)
 function ISODateString(d){
   function pad(n) { return n < 10 ? '0'+n : n }
   return d.getUTCFullYear() + '-'

@@ -28,7 +28,7 @@
       </div>
     </div>
     <div v-if="TodoList.length<1">
-      <img src="../assets/empty-search.svg"/>
+      <img src="../assets/empty-search.svg" width="200" height="200"/>
       <p id="message">{{message}}</p>
     </div>
   </div>

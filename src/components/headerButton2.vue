@@ -3,7 +3,7 @@
     <div class="header-button">
       <div class="button" @click="changeTab1">
         <img src="../assets/搜索.png" height="20" width="20"/><span
-        style="position:relative; font-size:14px;color:#666666;bottom: 5px;left: 5px;"">搜索</span>
+        style="position:relative; font-size:14px;color:#666666;bottom: 5px;left: 5px;">搜索</span>
       </div>
       <div class="button" @click="changeTab2">
         <img src="../assets/筛选.png" height="20" width="20"/><span
@@ -59,7 +59,7 @@
   .divider {
     border: 1px solid #f0f0f0;
     width: 100%;
-    height: 0px;
+    height: 0;
   }
 
 </style>

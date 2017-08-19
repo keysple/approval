@@ -9,11 +9,11 @@
       <p class="search-comment-text">在这里可以搜索到</p>
       <div class="search-comment-icon">
         <div class="comment-detail">
-          <img src="../assets/审批标题.png" class="search-img"/>
+          <img src="../assets/审批标题.png" width="24" height="24"  />
           <p>待办标题</p>
         </div>
         <div class="comment-detail">
-          <img src="../assets/people.png" class="search-img"/>
+          <img src="../assets/people.png"  width="24" height="24"/>
           <p>发起人</p>
         </div>
       </div>
@@ -146,9 +146,9 @@
     padding: 10px;
   }
 
-  .comment-detail img {
+/*  .comment-detail img {
     height: 24px;
-  }
+  }*/
 
   .comment-detail p {
     margin: 0;
